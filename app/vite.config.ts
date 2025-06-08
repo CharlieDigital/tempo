@@ -23,13 +23,13 @@ export default defineConfig({
       ),
     }),
 
-    Unimport.vite({
-      dts: true,
-      presets: ["vue"],
-      addons: {
-        vueTemplate: true,
-      },
-    }),
+    // Unimport.vite({
+    //   dts: true,
+    //   presets: ["vue"],
+    //   addons: {
+    //     vueTemplate: true,
+    //   },
+    // }),
 
     // https://github.com/unplugin/unplugin-auto-import
     AutoImport({

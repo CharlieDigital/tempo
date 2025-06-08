@@ -11,6 +11,10 @@
   "dependencies": {
     "@quasar/extras": "^1.17.0",
     "@vueuse/core": "^13.3.0",
+    "dayjs": "^1.11.13",
+    "firebase": "^11.9.0",
+    "nanoid": "^5.1.5",
+    "nanoid-dictionary": "^5.0.0",
     "pinia": "^3.0.3",
     "quasar": "^2.18.1",
     "unimport": "^5.0.1",

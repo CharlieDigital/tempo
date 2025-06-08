@@ -8,6 +8,16 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    BugReportDialog: typeof import('./src/components/BugReportDialog.vue')['default']
+    FeedbackDialog: typeof import('./src/components/FeedbackDialog.vue')['default']
+    MemberCard: typeof import('./src/components/MemberCard.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
+    SettingsDialog: typeof import('./src/components/SettingsDialog.vue')['default']
+    SideDialogShell: typeof import('./src/components/SideDialogShell.vue')['default']
+    TaskDetailPanel: typeof import('./src/components/TaskDetailPanel.vue')['default']
+    UsersDialog: typeof import('./src/components/UsersDialog.vue')['default']
+    WorkspaceOptionsDialog: typeof import('./src/components/WorkspaceOptionsDialog.vue')['default']
+    WorkspacesDialog: typeof import('./src/components/WorkspacesDialog.vue')['default']
   }
 }

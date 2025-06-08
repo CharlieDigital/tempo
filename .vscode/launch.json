@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "type": "firefox",
+      "name": "Launch Web App",
+      "request": "launch",
+      "reAttach": true,
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/app"
+    }
+  ]
+}
