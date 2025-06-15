@@ -43,7 +43,7 @@
             <QItemLabel caption>{{ task.description }}</QItemLabel>
           </QItemSection>
           <QItemSection side>
-            <QBadge color="accent"> In Progress </QBadge>
+            <QChip color="accent" dense> In Progress </QChip>
           </QItemSection>
         </QItem>
         <QItem v-if="!tasks.length">
@@ -74,6 +74,7 @@ const tasks: Task[] = [
     rank: "a",
     description: "Create the initial homepage design",
     createdBy: { uid: "user_1", name: "Charles Chen" },
+    targetDate: "",
   },
   {
     uid: "task_2",
@@ -84,6 +85,7 @@ const tasks: Task[] = [
     rank: "b",
     description: "Initialize Firestore collections",
     createdBy: { uid: "user_1", name: "Charles Chen" },
+    targetDate: "",
   },
   {
     uid: "task_3",
@@ -94,6 +96,7 @@ const tasks: Task[] = [
     rank: "c",
     description: "Add user authentication with Firebase",
     createdBy: { uid: "user_1", name: "Charles Chen" },
+    targetDate: "",
   },
 ];
 </script>

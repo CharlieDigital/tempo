@@ -48,6 +48,7 @@ export const useAppStore = defineStore("appStore", () => {
   const activeMilestones = ref<Milestone[]>([]);
   const authToken = ref<string>();
   const dark = computed(() => Dark.isActive);
+  const focusMode = ref(false);
 
   if (
     (userThemeMode.value === "light" && Dark.isActive) ||
@@ -113,6 +114,7 @@ export const useAppStore = defineStore("appStore", () => {
   return {
     user,
     profile,
+    focusMode,
     workspaces,
     activeWorkspace,
     activeMilestones,

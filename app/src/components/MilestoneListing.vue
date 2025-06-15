@@ -39,6 +39,9 @@
             />
           </QItemLabel>
         </QItemSection>
+        <QItemSection side>
+          <MilestoneMenu />
+        </QItemSection>
       </template>
 
       <div

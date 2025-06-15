@@ -120,6 +120,7 @@ export type Milestone = {
    * A color associated with the milestone
    */
   color?: ItemColor;
+  icons?: IconName[];
 } & Ref;
 
 /**

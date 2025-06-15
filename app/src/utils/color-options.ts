@@ -4,12 +4,16 @@ import { colors } from "quasar";
  * The valid place color values.
  */
 export type ItemColor =
+  | "yellow-8"
   | "deep-orange"
   | "orange"
+  | "red-8"
   | "pink"
   | "purple"
   | "indigo"
+  | "indigo-10"
   | "blue"
+  | "light-blue-8"
   | "cyan-8"
   | "teal-8"
   | "light-green-9"
@@ -21,12 +25,16 @@ export type ItemColor =
  * Color options to use for dropdowns and selectors.
  */
 export const colorOptions: { value: ItemColor; label: string }[] = [
+  { value: "yellow-8", label: "Yellow" },
   { value: "orange", label: "Orange" },
   { value: "deep-orange", label: "Deep Orange" },
+  { value: "red-8", label: "Red" },
   { value: "pink", label: "Pink" },
   { value: "purple", label: "Purple" },
   { value: "indigo", label: "Indigo" },
+  { value: "indigo-10", label: "Dark Indigo" },
   { value: "blue", label: "Blue" },
+  { value: "light-blue-8", label: "Light Blue" },
   { value: "cyan-8", label: "Cyan" },
   { value: "teal-8", label: "Teal" },
   { value: "light-green-9", label: "Light Green" },

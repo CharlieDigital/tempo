@@ -10,6 +10,7 @@ declare global {
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
+  const barStyle: typeof import('./src/utils/scroll-styles')['barStyle']
   const baseUrl: typeof import('./src/utils/environment')['baseUrl']
   const colorCssMap: typeof import('./src/utils/color-options')['colorCssMap']
   const colorOptions: typeof import('./src/utils/color-options')['colorOptions']
@@ -122,6 +123,7 @@ declare global {
   const templateRef: typeof import('@vueuse/core')['templateRef']
   const throttledRef: typeof import('@vueuse/core')['throttledRef']
   const throttledWatch: typeof import('@vueuse/core')['throttledWatch']
+  const thumbStyle: typeof import('./src/utils/scroll-styles')['thumbStyle']
   const toRaw: typeof import('vue')['toRaw']
   const toReactive: typeof import('@vueuse/core')['toReactive']
   const toRef: typeof import('vue')['toRef']
@@ -347,6 +349,7 @@ declare module 'vue' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
+    readonly barStyle: UnwrapRef<typeof import('./src/utils/scroll-styles')['barStyle']>
     readonly baseUrl: UnwrapRef<typeof import('./src/utils/environment')['baseUrl']>
     readonly colorCssMap: UnwrapRef<typeof import('./src/utils/color-options')['colorCssMap']>
     readonly colorOptions: UnwrapRef<typeof import('./src/utils/color-options')['colorOptions']>
@@ -457,6 +460,7 @@ declare module 'vue' {
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
     readonly throttledRef: UnwrapRef<typeof import('@vueuse/core')['throttledRef']>
     readonly throttledWatch: UnwrapRef<typeof import('@vueuse/core')['throttledWatch']>
+    readonly thumbStyle: UnwrapRef<typeof import('./src/utils/scroll-styles')['thumbStyle']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toReactive: UnwrapRef<typeof import('@vueuse/core')['toReactive']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>

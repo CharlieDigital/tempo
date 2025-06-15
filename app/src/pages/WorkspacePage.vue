@@ -54,6 +54,7 @@
     <WorkspacesDialog v-model="showWorkspaces" />
     <WorkspaceOptionsDialog v-model="showOptions" />
 
+    <!-- Right side drawer teleports -->
     <Teleport defer to="#right-drawer">
       <WorkspaceCard
         @show-options="showOptions = true"
@@ -61,6 +62,13 @@
       />
 
       <MilestonesSection />
+    </Teleport>
+
+    <!-- Left side drawer teleports -->
+    <Teleport defer to="#left-drawer">
+      <MembersSection />
+
+      <TimelineSection />
     </Teleport>
   </QPage>
 </template>
@@ -80,7 +88,7 @@ const showOptions = ref(false);
 dayjs.extend(relativeTime);
 const appStore = useAppStore();
 const route = useRoute();
-const { dark, activeWorkspace } = storeToRefs(appStore);
+const { dark, activeWorkspace, focusMode } = storeToRefs(appStore);
 
 let unsubscribeListeners: () => void;
 

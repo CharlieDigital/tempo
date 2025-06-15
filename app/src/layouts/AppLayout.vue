@@ -1,5 +1,11 @@
 <template>
-  <div class="constrained bg-grey-2">
+  <div
+    :class="{
+      constrained: focusMode,
+      'bg-grey-2': !dark,
+      'bg-grey-10': dark,
+    }"
+  >
     <QLayout view="lHr LpR fFf">
       <!--// Header //-->
       <QHeader
@@ -7,10 +13,10 @@
           'text-primary': !dark,
           'bg-grey-2': !dark,
           'text-grey-4': dark,
-          'bg-dark': dark,
+          'bg-grey-10': dark,
         }"
       >
-        <div class="q-ma-md">
+        <div class="q-ma-md q-px-xs">
           <QToolbar
             class="rounded-borders"
             :class="{
@@ -45,23 +51,35 @@
           </QBtn>
           -->
             <QBtn
+              class="q-mr-sm"
+              color="grey-7"
+              :icon="tabArrowBarBoth"
+              @click="toggleFocusMode"
               flat
               round
               dense
-              :icon="dark ? tabMoon : tabSun"
+            >
+              <QTooltip>Focus Mode</QTooltip>
+            </QBtn>
+            <QBtn
               class="q-mr-sm"
-              @click="toggleDarkMode"
+              color="grey-7"
+              :icon="dark ? tabMoon : tabSun"
+              @click="appStore.toggleDarkMode"
+              round
+              dense
+              flat
             >
               <QTooltip>{{ dark ? "Light Mode" : "Dark Mode" }}</QTooltip>
             </QBtn>
             <QBtn
-              flat
-              round
-              dense
+              class="q-mr-sm"
+              color="grey-7"
               :icon="tabLogout"
               @click="logout"
-              color="grey-7"
-              class="q-mr-sm"
+              round
+              dense
+              flat
             >
               <QTooltip>Logout</QTooltip>
             </QBtn>
@@ -70,7 +88,7 @@
       </QHeader>
 
       <!-- Main content of the router -->
-      <QPageContainer :class="dark ? 'bg-grey-10' : 'bg-grey-2'">
+      <QPageContainer :class="[dark ? 'bg-grey-10' : 'bg-grey-2']">
         <RouterView v-slot="{ Component, route }">
           <Transition :name="(route.meta.transitionName as string)" mode="out-in">
             <component :is="Component" :key="route.path" />
@@ -103,15 +121,15 @@ import { useQuasar } from "quasar";
 import { useAppStore } from "../stores/appStore";
 import { useRouter } from "vue-router";
 import { firebaseConnector } from "../services/FirebaseConnector";
+import { tabArrowBarBoth } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
 
-const { toggleDarkMode } = appStore;
+const { dark, focusMode } = storeToRefs(appStore);
 
 const $q = useQuasar();
-const dark = computed(() => $q.dark.isActive);
 const logoVariant = computed(() =>
   dark.value ? "/logo-check-85x24-dark.png" : "/logo-check-85x24.png"
 );
@@ -134,8 +152,17 @@ watch(
   { immediate: true }
 );
 
+watch(focusMode, (focus) => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+  rightDrawerOpen.value = !rightDrawerOpen.value;
+});
+
 async function logout() {
   await firebaseConnector.logout(router);
+}
+
+function toggleFocusMode() {
+  focusMode.value = !focusMode.value;
 }
 </script>
 
@@ -151,7 +178,7 @@ async function logout() {
 .constrained .q-header,
 .constrained .q-footer {
   margin: 0 auto;
-  /* max-width: 1245px !important; */
+  max-width: 1024px !important;
 }
 
 .nav-btn {
