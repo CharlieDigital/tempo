@@ -21,7 +21,6 @@ import {
   tabFlask,
   tabFolder,
   tabHeart,
-  tabHelp,
   tabHelpSquareRounded,
   tabHourglass,
   tabKeyboard,
@@ -30,7 +29,6 @@ import {
   tabMessage,
   tabPackage,
   tabPencil,
-  tabPhoto,
   tabPhotoSquareRounded,
   tabSpeakerphone,
   tabStack2,
@@ -41,7 +39,19 @@ import {
   tabVideo,
   tabUsersGroup,
   tabTransfer,
+  tabBattery,
+  tabBattery1,
+  tabBattery2,
+  tabBattery4,
+  tabBattery3,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
+
+import {
+  suiSignalFull,
+  suiSignalLow,
+  suiSignalMedium,
+  suiSignalNone,
+} from "quasar-extras-svg-icons/system-uicons";
 
 /**
  * Type that represents options with icons for selects.
@@ -102,6 +112,8 @@ export const iconOptions: IconOption[] = [
   { value: "video", icon: tabVideo },
 ];
 
+export type IconName = (typeof iconOptions)[number]["value"];
+
 /**
  * A list of all the icons that can be used in the app keyed by the icon value.
  */
@@ -112,3 +124,36 @@ export const iconOptionsMap = iconOptions
 
     return acc;
   }, {} as Record<string, string>);
+
+/**
+ * Priority options for tasks.
+ */
+export const taskPriorityOptions = [
+  { value: "low", icon: suiSignalNone },
+  { value: "medium", icon: suiSignalLow },
+  { value: "high", icon: suiSignalMedium },
+  { value: "urgent", icon: suiSignalFull },
+];
+
+export const taskPriorityOptionsMap = taskPriorityOptions.reduce(
+  (acc, option) => {
+    acc[option.value] = option.icon;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
+/**
+ * Effort options for tasks
+ */
+export const taskEffortOptions = [
+  { value: "low", icon: tabBattery1 },
+  { value: "medium", icon: tabBattery2 },
+  { value: "high", icon: tabBattery3 },
+  { value: "very_high", icon: tabBattery4 },
+];
+
+export const taskEffortOptionsMap = taskEffortOptions.reduce((acc, option) => {
+  acc[option.value] = option.icon;
+  return acc;
+}, {} as Record<string, string>);

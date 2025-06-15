@@ -1,3 +1,5 @@
+import type { ItemColor } from "../utils/color-options";
+
 /**
  * A simple reference type that holds a UID and name because this is a
  * document oriented database.
@@ -110,6 +112,14 @@ export type Milestone = {
    * The target date for the milestone in ISO8601 format
    */
   targetDate?: string;
+  /**
+   * A set of tags associated with this milestone
+   */
+  tags?: string[];
+  /**
+   * A color associated with the milestone
+   */
+  color?: ItemColor;
 } & Ref;
 
 /**
@@ -132,7 +142,7 @@ export type Task = {
    * The current completion step of the task.  This is a number between
    * 0 and 10 that represents completion percentage.
    */
-  step?: number;
+  step: number;
   /**
    * The tags associated with the task
    */
@@ -145,6 +155,9 @@ export type Task = {
    * A Lexorank string that represents the task's rank in the list.
    */
   rank: string;
+  targetDate: string;
+  icon?: IconName;
+  color?: ItemColor;
 } & Entity;
 
 /**

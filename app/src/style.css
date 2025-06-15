@@ -40,3 +40,8 @@
 .body--dark .q-item--dark {
   color: #d6d6d6;
 }
+
+/* Lighter color for hover */
+.q-focus-helper {
+  color: #b1b0ad;
+}

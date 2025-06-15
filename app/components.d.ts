@@ -9,14 +9,23 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BugReportDialog: typeof import('./src/components/BugReportDialog.vue')['default']
+    ColoredChip: typeof import('./src/components/ColoredChip.vue')['default']
     FeedbackDialog: typeof import('./src/components/FeedbackDialog.vue')['default']
     MemberCard: typeof import('./src/components/MemberCard.vue')['default']
+    MilestoneChip: typeof import('./src/components/MilestoneChip.vue')['default']
+    MilestoneListing: typeof import('./src/components/MilestoneListing.vue')['default']
+    MilestonesListing: typeof import('./src/components/MilestonesListing.vue')['default']
+    MilestonesSection: typeof import('./src/components/MilestonesSection.vue')['default']
+    MilestoneTaskListing: typeof import('./src/components/MilestoneTaskListing.vue')['default']
+    MilestonTaskItem: typeof import('./src/components/MilestonTaskItem.vue')['default']
+    MilestonTaskListing: typeof import('./src/components/MilestonTaskListing.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SettingsDialog: typeof import('./src/components/SettingsDialog.vue')['default']
     SideDialogShell: typeof import('./src/components/SideDialogShell.vue')['default']
     TaskDetailPanel: typeof import('./src/components/TaskDetailPanel.vue')['default']
     UsersDialog: typeof import('./src/components/UsersDialog.vue')['default']
+    WorkspaceCard: typeof import('./src/components/WorkspaceCard.vue')['default']
     WorkspaceOptionsDialog: typeof import('./src/components/WorkspaceOptionsDialog.vue')['default']
     WorkspacesDialog: typeof import('./src/components/WorkspacesDialog.vue')['default']
   }

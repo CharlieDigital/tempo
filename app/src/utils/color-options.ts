@@ -3,7 +3,7 @@ import { colors } from "quasar";
 /**
  * The valid place color values.
  */
-export type PlaceColor =
+export type ItemColor =
   | "deep-orange"
   | "orange"
   | "pink"
@@ -20,7 +20,7 @@ export type PlaceColor =
 /**
  * Color options to use for dropdowns and selectors.
  */
-export const colorOptions: { value: PlaceColor; label: string }[] = [
+export const colorOptions: { value: ItemColor; label: string }[] = [
   { value: "orange", label: "Orange" },
   { value: "deep-orange", label: "Deep Orange" },
   { value: "pink", label: "Pink" },
@@ -50,7 +50,7 @@ export type ColorStyle =
  * Pre-compute the CSS values for each of the color options as well.
  */
 export const colorCssMap: Record<
-  PlaceColor,
+  ItemColor,
   Record<ColorStyle, string>
 > = colorOptions.reduce((acc, color) => {
   const baseColor = getPaletteColor(color.value);
@@ -66,4 +66,4 @@ export const colorCssMap: Record<
   };
 
   return acc;
-}, {} as Record<PlaceColor, Record<ColorStyle, string>>);
+}, {} as Record<ItemColor, Record<ColorStyle, string>>);

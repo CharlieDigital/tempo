@@ -1,20 +1,30 @@
 <template>
   <div class="constrained bg-grey-2">
-    <QLayout view="lHr lpR lFr">
+    <QLayout view="lHr LpR fFf">
       <!--// Header //-->
-      <QHeader>
-        <QToolbar
-          :class="{
-            'text-primary': !dark,
-            'bg-white': !dark,
-            'text-grey-4': dark,
-            'bg-dark' : dark
-          }">
-          <QToolbarTitle>
-            <QImg :src="logoVariant" width="85px" height="24px" />
-          </QToolbarTitle>
-          <QSpace/>
-          <!--
+      <QHeader
+        :class="{
+          'text-primary': !dark,
+          'bg-grey-2': !dark,
+          'text-grey-4': dark,
+          'bg-dark': dark,
+        }"
+      >
+        <div class="q-ma-md">
+          <QToolbar
+            class="rounded-borders"
+            :class="{
+              'text-primary': !dark,
+              'bg-white': !dark,
+              'text-grey-4': dark,
+              'bg-dark': dark,
+            }"
+          >
+            <QToolbarTitle>
+              <QImg :src="logoVariant" width="85px" height="24px" />
+            </QToolbarTitle>
+            <QSpace />
+            <!--
           <QBtn
             flat
             round
@@ -34,37 +44,49 @@
             <QTooltip>Report a Bug</QTooltip>
           </QBtn>
           -->
-          <QBtn
-            flat
-            round
-            dense
-            :icon="dark ? tabMoon : tabSun"
-            class="q-mr-sm"
-            @click="toggleDarkMode">
-            <QTooltip>{{ dark ? 'Light Mode' : 'Dark Mode'  }}</QTooltip>
-          </QBtn>
-          <QBtn
-            flat
-            round
-            dense
-            :icon="tabLogout"
-            @click="logout"
-            color="grey-7"
-            class="q-mr-sm">
-            <QTooltip>Logout</QTooltip>
-          </QBtn>
-        </QToolbar>
+            <QBtn
+              flat
+              round
+              dense
+              :icon="dark ? tabMoon : tabSun"
+              class="q-mr-sm"
+              @click="toggleDarkMode"
+            >
+              <QTooltip>{{ dark ? "Light Mode" : "Dark Mode" }}</QTooltip>
+            </QBtn>
+            <QBtn
+              flat
+              round
+              dense
+              :icon="tabLogout"
+              @click="logout"
+              color="grey-7"
+              class="q-mr-sm"
+            >
+              <QTooltip>Logout</QTooltip>
+            </QBtn>
+          </QToolbar>
+        </div>
       </QHeader>
 
       <!-- Main content of the router -->
-      <QPageContainer :class="dark ? 'bg-grey-10' : 'bg-grey-2' ">
+      <QPageContainer :class="dark ? 'bg-grey-10' : 'bg-grey-2'">
         <RouterView v-slot="{ Component, route }">
-          <Transition
-            :name="(route.meta.transitionName as string)" mode="out-in">
-            <component :is="Component" :key="route.path"/>
+          <Transition :name="(route.meta.transitionName as string)" mode="out-in">
+            <component :is="Component" :key="route.path" />
           </Transition>
         </RouterView>
       </QPageContainer>
+
+      <!--// Left drawer //-->
+      <QDrawer show-if-above v-model="leftDrawerOpen" side="left" :width="380">
+        <div id="left-drawer"></div>
+      </QDrawer>
+
+      <!--// Right drawer //-->
+      <QDrawer show-if-above v-model="rightDrawerOpen" side="right" :width="380">
+        <div id="right-drawer"></div>
+      </QDrawer>
 
       <!-- Global Dialogs -->
       <!--
@@ -76,26 +98,44 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue"
-import { tabBug, tabLogout, tabMessagePlus, tabMoon, tabSun } from 'quasar-extras-svg-icons/tabler-icons'
-import { useQuasar } from 'quasar'
-import { useAppStore } from "../stores/appStore"
-import { useRouter } from "vue-router"
-import { firebaseConnector } from "../services/FirebaseConnector"
+import { tabLogout, tabMoon, tabSun } from "quasar-extras-svg-icons/tabler-icons";
+import { useQuasar } from "quasar";
+import { useAppStore } from "../stores/appStore";
+import { useRouter } from "vue-router";
+import { firebaseConnector } from "../services/FirebaseConnector";
 
-const router = useRouter()
-const appStore = useAppStore()
+const route = useRoute();
+const router = useRouter();
+const appStore = useAppStore();
 
-const { toggleDarkMode } = appStore
+const { toggleDarkMode } = appStore;
 
-const $q = useQuasar()
-const dark = computed(() => $q.dark.isActive)
-const logoVariant = computed(() => dark.value
-  ? "/logo-check-85x24-dark.png"
-  : "/logo-check-85x24.png")
+const $q = useQuasar();
+const dark = computed(() => $q.dark.isActive);
+const logoVariant = computed(() =>
+  dark.value ? "/logo-check-85x24-dark.png" : "/logo-check-85x24.png"
+);
+
+const leftDrawerOpen = ref(true);
+const rightDrawerOpen = ref(true);
+
+watch(
+  () => route.name,
+  (name) => {
+    console.log("Route changed to:", name);
+    if (name === "Home") {
+      leftDrawerOpen.value = false;
+      rightDrawerOpen.value = false;
+    } else {
+      leftDrawerOpen.value = true;
+      rightDrawerOpen.value = true;
+    }
+  },
+  { immediate: true }
+);
 
 async function logout() {
-  await firebaseConnector.logout(router)
+  await firebaseConnector.logout(router);
 }
 </script>
 
@@ -120,7 +160,7 @@ async function logout() {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .1s ease;
+  transition: opacity 0.1s ease;
 }
 
 .fade-enter-from,

@@ -1,9 +1,5 @@
 <template>
-  <SideDialogShell
-    v-model="visible"
-    title="Workspace Options"
-    :icon="tabEditCircle"
-  >
+  <SideDialogShell v-model="visible" title="Workspace Options" :icon="tabEditCircle">
     <!--// The milestone and objective //-->
     <QCardSection>
       <p class="text-bold">Basics</p>
@@ -55,7 +51,9 @@
       </QInput>
 
       <p class="text-bold q-mt-lg">Workstreams</p>
-      <p>How are your workstreams organized?  These can represent people, teams, or topics</p>
+      <p>
+        How are your workstreams organized? These can represent people, teams, or topics
+      </p>
 
       <QList>
         <QItem
@@ -67,7 +65,7 @@
             <QInput
               stack-label
               :label="index === 0 ? 'Default workstream' : `Workstream ${index}`"
-              v-model="activeWorkspace.workstreams[index]"
+              v-model="activeWorkspace.workstreams[index].name"
               :color="dark ? 'accent' : 'dark'"
               :autofocus="false"
             >
@@ -77,7 +75,8 @@
                   flat
                   dense
                   :icon="tabTrash"
-                  @click="removeWorkstream(index)" />
+                  @click="removeWorkstream(index)"
+                />
                 <QBtn
                   v-if="workstreams && index === workstreams.length - 1"
                   flat
@@ -105,26 +104,36 @@
 </template>
 
 <script setup lang="ts">
-import { tabCalendarEvent, tabCircleCheck, tabEditCircle, tabPlug, tabPlus, tabTrash } from 'quasar-extras-svg-icons/tabler-icons'
-import { workspaceRepository } from '../services/Repository'
+import {
+  tabCalendarEvent,
+  tabCircleCheck,
+  tabEditCircle,
+  tabPlug,
+  tabPlus,
+  tabTrash,
+} from "quasar-extras-svg-icons/tabler-icons";
+import { workspaceRepository } from "../services/Repository";
 
-const visible = defineModel<boolean>({ required: true })
+const visible = defineModel<boolean>({ required: true });
 
-const store = useAppStore()
-const { dark, activeWorkspace } = storeToRefs(store)
-const workstreams = computed(() => activeWorkspace.value.workstreams)
+const store = useAppStore();
+const { dark, activeWorkspace } = storeToRefs(store);
+const workstreams = computed(() => activeWorkspace.value.workstreams);
 
 function addWorkstream() {
-  const lastIndex = activeWorkspace.value.workstreams.length ?? 0
-  activeWorkspace.value.workstreams.splice(lastIndex, 0, `Workstream ${lastIndex}`)
+  const lastIndex = activeWorkspace.value.workstreams.length ?? 0;
+  activeWorkspace.value.workstreams.splice(lastIndex, 0, {
+    uid: nanoid(6),
+    name: `Workstream ${lastIndex}`,
+  });
 }
 
 function removeWorkstream(index: number) {
-  activeWorkspace.value.workstreams.splice(index, 1)
+  activeWorkspace.value.workstreams.splice(index, 1);
 }
 
 async function saveWorkspaceOptions() {
-  workspaceRepository.update(activeWorkspace.value)
+  workspaceRepository.update(activeWorkspace.value);
 }
 </script>
 

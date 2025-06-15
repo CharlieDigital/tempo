@@ -115,6 +115,10 @@ declare global {
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
+  const taskEffortOptions: typeof import('./src/utils/icon-options')['taskEffortOptions']
+  const taskEffortOptionsMap: typeof import('./src/utils/icon-options')['taskEffortOptionsMap']
+  const taskPriorityOptions: typeof import('./src/utils/icon-options')['taskPriorityOptions']
+  const taskPriorityOptionsMap: typeof import('./src/utils/icon-options')['taskPriorityOptionsMap']
   const templateRef: typeof import('@vueuse/core')['templateRef']
   const throttledRef: typeof import('@vueuse/core')['throttledRef']
   const throttledWatch: typeof import('@vueuse/core')['throttledWatch']
@@ -327,10 +331,10 @@ declare global {
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
-  export type { PlaceColor, ColorStyle } from './src/utils/color-options'
+  export type { ItemColor, ColorStyle } from './src/utils/color-options'
   import('./src/utils/color-options')
   // @ts-ignore
-  export type { IconOption } from './src/utils/icon-options'
+  export type { IconOption, IconName } from './src/utils/icon-options'
   import('./src/utils/icon-options')
 }
 
@@ -446,6 +450,10 @@ declare module 'vue' {
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
+    readonly taskEffortOptions: UnwrapRef<typeof import('./src/utils/icon-options')['taskEffortOptions']>
+    readonly taskEffortOptionsMap: UnwrapRef<typeof import('./src/utils/icon-options')['taskEffortOptionsMap']>
+    readonly taskPriorityOptions: UnwrapRef<typeof import('./src/utils/icon-options')['taskPriorityOptions']>
+    readonly taskPriorityOptionsMap: UnwrapRef<typeof import('./src/utils/icon-options')['taskPriorityOptionsMap']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
     readonly throttledRef: UnwrapRef<typeof import('@vueuse/core')['throttledRef']>
     readonly throttledWatch: UnwrapRef<typeof import('@vueuse/core')['throttledWatch']>
