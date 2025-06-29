@@ -102,8 +102,24 @@
       </QPageContainer>
 
       <!--// Left drawer //-->
-      <QDrawer show-if-above v-model="leftDrawerOpen" side="left" :width="380">
-        <div id="left-drawer"></div>
+      <QDrawer
+        show-if-above
+        v-model="leftDrawerOpen"
+        side="left"
+        :width="380"
+        class="column"
+      >
+        <div id="left-drawer-top" class="col col-shrink"></div>
+        <QSeparator inset />
+        <div class="col column">
+          <QScrollArea
+            style="flex: 1 1 1px"
+            :thumb-style="thumbStyle"
+            :bar-style="barStyle"
+          >
+            <div id="left-drawer-bottom"></div>
+          </QScrollArea>
+        </div>
       </QDrawer>
 
       <!--// Right drawer //-->

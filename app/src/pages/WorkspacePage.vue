@@ -70,9 +70,11 @@
     </Teleport>
 
     <!-- Left side drawer teleports -->
-    <Teleport defer to="#left-drawer">
+    <Teleport defer to="#left-drawer-top">
       <MembersSection />
+    </Teleport>
 
+    <Teleport defer to="#left-drawer-bottom">
       <TimelineSection />
     </Teleport>
 

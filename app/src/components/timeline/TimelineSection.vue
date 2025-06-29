@@ -1,6 +1,4 @@
 <template>
-  <QSeparator inset />
-
   <QToolbar>
     <QToolbarTitle class="tempo-skew q-ml-xs"
       ><span class="text-body1 text-bold">Timeline</span></QToolbarTitle
