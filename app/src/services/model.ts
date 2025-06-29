@@ -228,3 +228,12 @@ export type WorkspaceTimeline = {
    */
   events: TimelineEvent[];
 } & Entity;
+
+/**
+ * Supports vue3-smooth-dnd drag and drop events.
+ */
+export interface DropEvent {
+  removedIndex: number | null;
+  addedIndex: number | null;
+  payload: any;
+}

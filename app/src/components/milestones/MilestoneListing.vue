@@ -40,6 +40,16 @@
               @click.capture.stop
               dense
             />
+            <QAvatar
+              v-for="icon in milestone.icons"
+              size="18px"
+              font-size="0.95em"
+              class="q-mr-xs"
+              color="none"
+              :text-color="milestone.color"
+              :icon="iconOptionsMap[icon]"
+              square
+            />
           </QItemLabel>
         </QItemSection>
         <QItemSection v-show="hoveringMilestone === milestone.uid" side>

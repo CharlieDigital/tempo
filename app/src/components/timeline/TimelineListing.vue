@@ -40,7 +40,7 @@ const props = defineProps<{
 }>();
 
 const reversedEvents = computed(() => {
-  return [...props.events].reverse();
+  return [...props.events].reverse().splice(0, 10);
 });
 
 const actionIcons: Record<ActionType, string> = {
@@ -72,7 +72,7 @@ const actionColors: Record<ActionType, string> = {
 }
 
 .q-timeline {
-  opacity: 0.6;
+  opacity: 0.3;
   transition: opacity 0.3s ease-in-out;
 }
 

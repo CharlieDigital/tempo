@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ItemColor } from "../utils/color-options";
+import type { ItemColor } from "../../utils/color-options";
 
 const appStore = useAppStore();
 

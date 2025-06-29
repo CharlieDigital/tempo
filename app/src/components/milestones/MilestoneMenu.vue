@@ -14,15 +14,19 @@
       transition-show="jump-up"
       transition-hide="jump-down"
       :offset="[0, 0]"
-      :transition-duration="200"
+      :transition-duration="50"
       @hide="handleCancel"
     >
       <QCard class="q-pa-sm" style="width: 360px">
         <!-- Header text -->
-        <QCardSection class="q-pa-xs" style="font-family: Quicksand">
-          <span class="text-caption text-grey-7">{{
-            milestone ? "Edit Milestone" : "Add Milestone"
-          }}</span>
+        <QCardSection class="q-pa-xs row" style="font-family: Quicksand">
+          <div class="col text-caption text-grey-7">
+            {{ milestone ? "Edit Milestone" : "Add Milestone" }}
+          </div>
+          <QSpace />
+          <div class="col col-shrink">
+            <QBtn size="sm" :icon="tabX" v-close-popup dense flat />
+          </div>
         </QCardSection>
 
         <!-- Name input -->
@@ -68,7 +72,7 @@
 
         <!-- Colors -->
         <QCardSection class="q-pa-xs">
-          <div v-for="set in colors" class="row q-mb-xs">
+          <div v-for="set in colors" class="row q-mb-xs q-gutter-xs">
             <QBtn
               v-for="color in set"
               class="col"
@@ -90,7 +94,7 @@
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
           >
-            <div v-for="set in icons" class="row q-mb-xs">
+            <div v-for="set in icons" class="row q-mb-xs q-gutter-xs">
               <QBtn
                 v-for="icon in set"
                 class="col"
@@ -189,6 +193,7 @@ import type { Milestone } from "../../services/model";
 import {
   tabBackspace,
   tabSquareRoundedPlus,
+  tabX,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const props = defineProps<{
@@ -208,15 +213,17 @@ const enteredName = ref(props.milestone?.name ?? "");
 const enteredObjective = ref(props.milestone?.objective ?? "");
 
 watch(
-  () => props.milestone,
-  (milestone) => {
-    if (milestone) {
-      selectedColor.value = milestone.color;
-      selectedIcons.value = [...(milestone.icons ?? [])];
-      enteredTags.value = [...(milestone.tags ?? [])];
-      enteredName.value = milestone.name ?? "";
-      enteredObjective.value = milestone.objective ?? "";
+  () => props.milestone?.uid,
+  (uid) => {
+    if (!uid || !props.milestone) {
+      return;
     }
+
+    selectedColor.value = props.milestone.color;
+    selectedIcons.value = [...(props.milestone.icons ?? [])];
+    enteredTags.value = [...(props.milestone.tags ?? [])];
+    enteredName.value = props.milestone.name ?? "";
+    enteredObjective.value = props.milestone.objective ?? "";
   },
   { immediate: true }
 );
@@ -281,17 +288,9 @@ function handleSave() {
   const mode = props.milestone ? "update" : "add";
 
   emits("save", milestone, mode);
-
-  handleCancel();
 }
 
-function handleCancel() {
-  selectedColor.value = undefined;
-  enteredName.value = "";
-  selectedIcons.value = [];
-  enteredTags.value = [];
-  enteredObjective.value = "";
-}
+function handleCancel() {}
 </script>
 
 <style scoped></style>

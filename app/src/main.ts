@@ -83,4 +83,4 @@ app.use(pinia);
 // Connect Vue Router
 app.use(router);
 
-app.mount("#app");
+app.mount("#tempo-app");
