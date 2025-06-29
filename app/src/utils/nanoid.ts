@@ -7,6 +7,6 @@ import { alphanumeric } from "nanoid-dictionary";
  * @param size An optional integer which defines the size of the ID string.
  */
 export const nanoid = (size?: number | undefined): string => {
-  const characterCount = size ?? 16;
+  const characterCount = size ?? 8;
   return customAlphabet(alphanumeric, characterCount)();
 };

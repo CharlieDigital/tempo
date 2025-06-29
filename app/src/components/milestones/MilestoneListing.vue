@@ -2,7 +2,7 @@
   <QList class="q-px-sm">
     <QExpansionItem
       v-model="expanded"
-      header-class="rounded-borders q-mt-sm q-pa-sm"
+      header-class="rounded-borders q-mt-sm q-pa-sm relative"
       @mouseover="hoveringMilestone = milestone.uid"
       @mouseout="hoveringMilestone = ''"
       hide-expand-icon
@@ -20,6 +20,7 @@
               :color="milestone.color"
               :label="tasks.length"
               :icon="tabHexagons"
+              :dark
               @click.capture.stop
             />
             <ColoredChip
@@ -27,6 +28,7 @@
               :color="milestone.color"
               :label="dayjs().to(milestone.targetDate)"
               :icon="tabCalendarDue"
+              :dark
               @click.capture.stop
             />
             <ColoredChip
@@ -34,14 +36,22 @@
               :key="tag"
               :color="milestone.color"
               :label="tag"
+              :dark
               @click.capture.stop
               dense
             />
           </QItemLabel>
         </QItemSection>
-        <QItemSection side>
-          <MilestoneMenu />
+        <QItemSection v-show="hoveringMilestone === milestone.uid" side>
+          <MilestoneMenu :milestone @save="handleSaveMilestone" />
         </QItemSection>
+        <QIcon
+          v-show="hoveringMilestone === milestone.uid"
+          :name="tabGripHorizontal"
+          class="grip absolute"
+          size="xs"
+          color="grey-6"
+        />
       </template>
 
       <div
@@ -66,41 +76,40 @@
 </template>
 
 <script setup lang="ts">
-import { tabCalendarDue, tabHexagons } from "quasar-extras-svg-icons/tabler-icons-v2";
-import type { Milestone, Task } from "../services/model";
+import {
+  tabCalendarDue,
+  tabGripHorizontal,
+  tabHexagons,
+} from "quasar-extras-svg-icons/tabler-icons-v2";
+import type { Milestone, Task } from "../../services/model";
 import dayjs from "dayjs";
 
-const props = defineProps<{
+defineProps<{
   milestone: Milestone;
 }>();
+
+const appStore = useAppStore();
+const { dark } = storeToRefs(appStore);
+
+const dataStore = useDataStore();
 
 const expanded = ref(false);
 const hoveringMilestone = ref("");
 const hoveringTask = ref("");
 
-// TODO: These should be computed
-const tasks = ref<Task[]>([
-  {
-    uid: "task_1",
-    name: "Design UI",
-    description: "Create the initial UI design",
-    step: 0.5,
-    workspaceUid: "",
-    assignees: {},
-    rank: "",
-    targetDate: "",
-  },
-  {
-    uid: "task_2",
-    name: "Implement Backend",
-    description: "Set up the backend infrastructure",
-    step: 0.8,
-    workspaceUid: "",
-    assignees: {},
-    rank: "",
-    targetDate: "",
-  },
-]);
+async function handleSaveMilestone(milestone: Milestone, mode: "add" | "update") {
+  await dataStore.saveMilestone(milestone, mode);
+}
+
+const tasks = computed<Task[]>(() => {
+  return [];
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.grip {
+  cursor: grab;
+  top: 4px;
+  right: 16px;
+}
+</style>

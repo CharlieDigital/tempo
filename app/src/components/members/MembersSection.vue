@@ -8,11 +8,15 @@
     </QBtn>
   </QToolbar>
 
-  <MemberListing />
+  <MemberListing :members />
 </template>
 
 <script setup lang="ts">
 import { tabSquareRoundedPlus } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { useDataStore } from "../../stores/dataStore";
+
+const dataStore = useDataStore();
+const { members } = storeToRefs(dataStore);
 </script>
 
 <style scoped></style>

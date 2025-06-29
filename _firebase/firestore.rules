@@ -24,5 +24,13 @@ service cloud.firestore {
 
       allow create: if request.auth != null
     }
+
+    // Timeline permissions
+    match /timelines/{timeline} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.uid in get(/databases/$(database)/documents/workspaces/$(resource.data.workspaceUid)).data.users
+
+      allow create: if request.auth != null
+    }
   }
 }

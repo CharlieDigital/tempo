@@ -29,6 +29,9 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import dayjs from "dayjs";
 
+import "@quasar/extras/animate/fadeInDown.css";
+import "@quasar/extras/animate/slideInDown.css";
+
 declare module "pinia" {
   export interface PiniaCustomProperties {
     router: Router;

@@ -9,17 +9,10 @@
       </QBtn>
     </QCardActions>
 
-    <QToolbar class="justify-center">
-      <!-- Title -->
-      <QToolbarTitle class="tempo-skew text-bold">{{
-        activeWorkspace?.name
-      }}</QToolbarTitle>
-    </QToolbar>
-
     <QItem class="q-px-xs">
       <QItemSection class="q-px-sm">
-        <QItemLabel caption>
-          {{ activeTargetDate?.format("YYYY/MM/DD") ?? "" }} ({{ activeTargetDateTo }})
+        <QItemLabel v-if="activeTargetDate" caption>
+          {{ activeTargetDate?.format("YYYY/MM/DD") }} ({{ activeTargetDateTo }})
         </QItemLabel>
         <QItemLabel class="text-subtitle1 text-weight-bold tempo-skew">
           {{ activeWorkspace?.headline ?? "Headline" }}
@@ -36,8 +29,8 @@
 import { tabEditCircle, tabSwitchHorizontal } from "quasar-extras-svg-icons/tabler-icons";
 import dayjs from "dayjs";
 
-const appStore = useAppStore();
-const { activeWorkspace } = storeToRefs(appStore);
+const dataStore = useDataStore();
+const { activeWorkspace } = storeToRefs(dataStore);
 
 const emit = defineEmits<{
   showWorkspaces: [];
@@ -45,7 +38,9 @@ const emit = defineEmits<{
 }>();
 
 const activeTargetDate = computed(() =>
-  dayjs(activeWorkspace.value.activeTargetDate, "YYYY/MM/DD")
+  activeWorkspace.value.activeTargetDate
+    ? dayjs(activeWorkspace.value.activeTargetDate, "YYYY/MM/DD")
+    : undefined
 );
 
 const activeTargetDateTo = computed(() => {

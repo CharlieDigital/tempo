@@ -28,6 +28,11 @@
           >
             <QToolbarTitle>
               <QImg :src="logoVariant" width="85px" height="24px" />
+              <div
+                id="header-title"
+                class="q-ml-lg tempo-skew"
+                style="display: inline-block"
+              ></div>
             </QToolbarTitle>
             <QSpace />
             <!--

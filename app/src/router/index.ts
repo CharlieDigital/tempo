@@ -11,8 +11,9 @@ const router = createRouter({
  * Sets up the authentication checks.
  */
 router.beforeEach((to) => {
-  const appStore = useAppStore();
-  const { user } = appStore;
+  const { user } = useAppStore();
+
+  const dataStore = useDataStore();
 
   // User is logged in; redirect to home or the target redirect
   if (user && to.name === "login") {
@@ -26,7 +27,7 @@ router.beforeEach((to) => {
 
   // Loading a workspace page; set the active workspace.
   if (to.name === "WorkspacePage") {
-    appStore.setActiveWorkspace(to.params.uid as string);
+    dataStore.setActiveWorkspace(to.params.uid as string);
   }
 });
 

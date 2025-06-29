@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { tabGripVertical, tabHexagon } from "quasar-extras-svg-icons/tabler-icons-v2";
-import type { Task } from "../services/model";
+import type { Task } from "../../services/model";
 
 const props = defineProps<{
   task: Task;

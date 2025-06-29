@@ -1,5 +1,13 @@
 <template>
-  <QBtn :icon="evaEditOutline" @click.stop dense flat no-caps size="md">
+  <QBtn
+    :icon="milestone ? evaEditOutline : tabSquareRoundedPlus"
+    :class="{ 'q-mr-xs': !milestone }"
+    @click.stop
+    dense
+    flat
+    no-caps
+    size="md"
+  >
     <QMenu
       anchor="top left"
       self="top right"
@@ -7,11 +15,14 @@
       transition-hide="jump-down"
       :offset="[0, 0]"
       :transition-duration="200"
+      @hide="handleCancel"
     >
       <QCard class="q-pa-sm" style="width: 360px">
         <!-- Header text -->
         <QCardSection class="q-pa-xs" style="font-family: Quicksand">
-          <span class="text-caption text-grey-7">Edit Milestone</span>
+          <span class="text-caption text-grey-7">{{
+            milestone ? "Edit Milestone" : "Add Milestone"
+          }}</span>
         </QCardSection>
 
         <!-- Name input -->
@@ -29,6 +40,27 @@
             hide-bottom-space
             clearable
             autofocus
+            dense
+          >
+          </QInput>
+        </QCardSection>
+
+        <!-- Objective input -->
+        <QCardSection class="q-pa-xs">
+          <QInput
+            v-model="enteredObjective"
+            class="q-mx-xs"
+            type="textarea"
+            input-style="font-family: Quicksand"
+            hint="The objective for this milestone"
+            :placeholder="`Objective`"
+            :color="selectedColor"
+            :clear-icon="tabBackspace"
+            :input-class="`text-${selectedColor}`"
+            @clear="enteredObjective = ''"
+            hide-bottom-space
+            clearable
+            autogrow
             dense
           >
           </QInput>
@@ -77,7 +109,7 @@
         <!-- Tags -->
         <QCardSection class="q-pa-xs q-pt-none" style="font-family: Quicksand">
           <QSelect
-            label="Tags"
+            label="Tags (ENTER to add))"
             v-model="enteredTags"
             input-debounce="0"
             input-style="font-family: Quicksand"
@@ -94,7 +126,7 @@
         <QCardActions align="right" style="font-family: Quicksand">
           <QToggle
             v-model="enableDelete"
-            v-show="!enableDelete"
+            v-show="!enableDelete && milestone"
             label="Delete"
             dense
             size="sm"
@@ -114,11 +146,11 @@
           <QSpace />
           <QBtn
             v-close-popup
-            label="Update"
+            label="Save"
             class="q-ml-xs"
             :disable="!changed"
             :icon="evaCheckmark"
-            @click="handleUpdate"
+            @click="handleSave"
             no-caps
             flat
             dense
@@ -136,6 +168,9 @@
         </QCardActions>
       </QCard>
     </QMenu>
+    <QTooltip v-if="!milestone" self="center end" anchor="center left"
+      >Add Milestone</QTooltip
+    >
   </QBtn>
 </template>
 
@@ -148,10 +183,13 @@ import {
   evaRadioButtonOn,
   evaTrashOutline,
 } from "@quasar/extras/eva-icons";
-import type { ItemColor } from "../utils/color-options";
-import type { IconName } from "../utils/icon-options";
-import type { Milestone } from "../services/model";
-import { tabBackspace } from "quasar-extras-svg-icons/tabler-icons-v2";
+import type { ItemColor } from "../../utils/color-options";
+import type { IconName } from "../../utils/icon-options";
+import type { Milestone } from "../../services/model";
+import {
+  tabBackspace,
+  tabSquareRoundedPlus,
+} from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const props = defineProps<{
   milestone?: Milestone;
@@ -159,7 +197,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   delete: [];
-  update: [{ color?: ItemColor; name: string; icons: string[]; tags: string[] }];
+  save: [milestone: Milestone, mode: "add" | "update"];
 }>();
 
 const enableDelete = ref<boolean>(false);
@@ -167,6 +205,21 @@ const selectedColor = ref<ItemColor | undefined>(props.milestone?.color);
 const selectedIcons = ref<IconName[]>([...(props.milestone?.icons ?? [])]);
 const enteredTags = ref<string[]>([...(props.milestone?.tags ?? [])]);
 const enteredName = ref(props.milestone?.name ?? "");
+const enteredObjective = ref(props.milestone?.objective ?? "");
+
+watch(
+  () => props.milestone,
+  (milestone) => {
+    if (milestone) {
+      selectedColor.value = milestone.color;
+      selectedIcons.value = [...(milestone.icons ?? [])];
+      enteredTags.value = [...(milestone.tags ?? [])];
+      enteredName.value = milestone.name ?? "";
+      enteredObjective.value = milestone.objective ?? "";
+    }
+  },
+  { immediate: true }
+);
 
 const chunkSize = 8;
 
@@ -198,6 +251,7 @@ const changed = computed(
   () =>
     props.milestone?.name.trim() !== enteredName.value.trim() ||
     props.milestone?.color !== selectedColor.value ||
+    props.milestone?.objective !== enteredObjective.value.trim() ||
     (props.milestone?.icons ?? []).join("") !== selectedIcons.value.join("") ||
     (props.milestone?.tags ?? []).join("") !== enteredTags.value.join("")
 );
@@ -212,20 +266,31 @@ function handleToggleIcon(iconName: string) {
   }
 }
 
-function handleUpdate() {
-  emits("update", {
+function handleSave() {
+  const milestone: Milestone = {
+    uid: props.milestone?.uid ?? nanoid(4),
+    name: enteredName.value.trim(),
     color: selectedColor.value,
-    name: enteredName.value,
-    icons: selectedIcons.value,
-    tags: enteredTags.value,
-  });
+    icons: [...selectedIcons.value],
+    tags: [...enteredTags.value],
+    objective: enteredObjective.value.trim(),
+    type: "milestone",
+    rank: props.milestone?.rank ?? "",
+  };
+
+  const mode = props.milestone ? "update" : "add";
+
+  emits("save", milestone, mode);
+
+  handleCancel();
 }
 
 function handleCancel() {
-  selectedColor.value = props.milestone?.color;
-  enteredName.value = props.milestone?.name ?? "";
-  selectedIcons.value = [...(props.milestone?.icons ?? [])];
-  enteredTags.value = [...(props.milestone?.tags ?? [])];
+  selectedColor.value = undefined;
+  enteredName.value = "";
+  selectedIcons.value = [];
+  enteredTags.value = [];
+  enteredObjective.value = "";
 }
 </script>
 

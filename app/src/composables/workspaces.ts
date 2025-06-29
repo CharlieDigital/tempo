@@ -1,9 +1,7 @@
 import { type Unsubscribe, where } from "firebase/firestore";
 import { type Router } from "vue-router";
-import { computed, ref } from "vue";
 import { customAlphabet } from "nanoid";
 import { alphanumeric } from "nanoid-dictionary";
-import { defaultWorkspace, useAppStore } from "../stores/appStore";
 import { workspaceRepository } from "../services/Repository";
 
 export function useCreateWorkspace() {

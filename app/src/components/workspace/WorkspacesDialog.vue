@@ -1,9 +1,5 @@
 <template>
-  <SideDialogShell
-    v-model="visible"
-    title="Manage Workspaces"
-    :icon="tabHexagon"
-  >
+  <SideDialogShell v-model="visible" title="Manage Workspaces" :icon="tabHexagon">
     <!--// There are no workspace references for this user //-->
     <template v-if="!hasWorkspaces">
       <QCardSection>
@@ -77,16 +73,21 @@
 
 <script setup lang="ts">
 import { tabHexagon, tabPlus } from "quasar-extras-svg-icons/tabler-icons";
-import { useCreateWorkspace } from "../composables/workspaces";
+import { useCreateWorkspace } from "../../composables/workspaces";
 
 const store = useAppStore();
 const { dark } = storeToRefs(store);
+
+const dataStore = useDataStore();
+const { workspaces } = storeToRefs(dataStore);
+
 const profile = computed(() => store.profile);
-const workspaces = computed(() => store.workspaces);
+
 const hasWorkspaces = computed(() => workspaces.value.length > 0);
+
 const { workspaceName, createWorkspace } = useCreateWorkspace();
 
-const visible = defineModel<boolean>({ required: true })
+const visible = defineModel<boolean>({ required: true });
 </script>
 
 <style>

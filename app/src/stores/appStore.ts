@@ -22,16 +22,8 @@ export const defaultProfile: Profile = {
   createdBy: {
     uid: "default",
     name: "default",
+    type: "profile",
   },
-};
-
-export const defaultWorkspace: Workspace = {
-  uid: nanoid(),
-  name: "New workspace",
-  headline: "Headline",
-  headlineDetails: "What are you up to?",
-  workstreams: [{ uid: "default", name: "My Team" }],
-  milestones: [],
 };
 
 type AppStore = ReturnType<typeof useAppStore>;
@@ -42,10 +34,7 @@ type AppStore = ReturnType<typeof useAppStore>;
  */
 export const useAppStore = defineStore("appStore", () => {
   const user = ref<User>();
-  const profile = ref<Profile>();
-  const workspaces = ref<Workspace[]>([]);
-  const activeWorkspace = ref<Workspace>(defaultWorkspace);
-  const activeMilestones = ref<Milestone[]>([]);
+  const profile = ref<Profile>(defaultProfile);
   const authToken = ref<string>();
   const dark = computed(() => Dark.isActive);
   const focusMode = ref(false);
@@ -92,6 +81,7 @@ export const useAppStore = defineStore("appStore", () => {
         createdBy: {
           uid: authUser.uid,
           name: authUser.displayName ?? "",
+          type: "profile",
         },
       };
       profile.value = userProfile;
@@ -101,29 +91,15 @@ export const useAppStore = defineStore("appStore", () => {
     }
   }
 
-  function setActiveWorkspace(uid: string) {
-    const workspace = workspaces.value.find((w) => w.uid === uid);
-
-    if (workspace) {
-      activeWorkspace.value = workspace;
-    } else {
-      console.log(`No workspace with the UID: ${uid}`);
-    }
-  }
-
   return {
     user,
     profile,
     focusMode,
-    workspaces,
-    activeWorkspace,
-    activeMilestones,
     authToken,
     dark,
     route,
     toggleDarkMode,
     setUser,
     clearUser,
-    setActiveWorkspace,
   };
 });

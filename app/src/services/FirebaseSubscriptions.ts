@@ -52,6 +52,7 @@ class FirebaseSubscriptions {
     }
 
     const unsubscribe = this._subscriptions.get(name);
+
     console.log(` 🧹 Cleaning up subscription: ${name}`);
     if (unsubscribe) {
       unsubscribe();

@@ -1,24 +1,38 @@
 import type { ItemColor } from "../utils/color-options";
 
-/**
- * A simple reference type that holds a UID and name because this is a
- * document oriented database.
- */
-export type Ref = {
+export type EntityType =
+  | "profile"
+  | "workspace"
+  | "task"
+  | "milestone"
+  | "invite"
+  | "workstream"
+  | "timeline";
+
+export type EntityBase = {
   uid: string;
   name: string;
 };
 
 /**
+ * A simple reference type that holds a UID and name because this is a
+ * document oriented database.
+ */
+export type EntityRef = {
+  type: EntityType;
+  createdUtc?: string;
+} & EntityBase;
+
+/**
  * The base entity type that holds common fields for all entities.
  */
 export type Entity = {
-  createdBy?: Ref;
-  updatedBy?: Ref;
+  createdBy?: EntityRef;
   createdUtc?: string;
+  updatedBy?: EntityRef;
   updatedUtc?: string;
   schemaVersion?: number;
-} & Ref;
+} & EntityBase;
 
 /**
  * An invite created for another user to join the workspace.
@@ -57,7 +71,7 @@ export type Profile = {
   /**
    * The default workspace for the user.
    */
-  defaultWorkspace?: Ref;
+  defaultWorkspace?: EntityRef;
 } & Entity;
 
 /**
@@ -67,7 +81,7 @@ export type Workspace = {
   /**
    * The list of objectives associated with this workspace
    */
-  objectives?: Ref[];
+  objectives?: EntityRef[];
   /**
    * The list of users associated with this workspace; use a record for rule eval.
    */
@@ -91,14 +105,14 @@ export type Workspace = {
   /**
    * The milestones for this workspace (embedded)
    */
-  milestones: Milestone[];
+  milestones: Record<string, Milestone>;
 } & Entity;
 
 /**
  * Represents a named workstream within a workspace.  These can be
  * different subsets of work such as "Sales" or "Engineering".
  */
-export type Workstream = {} & Ref;
+export type Workstream = {} & EntityRef;
 
 /**
  * A milestone represents a specific objective within a workspace.
@@ -121,7 +135,8 @@ export type Milestone = {
    */
   color?: ItemColor;
   icons?: IconName[];
-} & Ref;
+  rank: string;
+} & EntityRef;
 
 /**
  * A task associated with the workspace and assigned to one or more users.
@@ -162,9 +177,16 @@ export type Task = {
 } & Entity;
 
 /**
+ * Base action types
+ */
+export type ActionType = "add" | "update" | "delete";
+
+/**
  * A timeline event represents a specific event that occurred within a workspace.
  */
 export type TimelineEvent = {
+  uid: string;
+  name: string;
   /**
    * The UID of the workspace (for ease of retrieval)
    */
@@ -180,5 +202,29 @@ export type TimelineEvent = {
   /**
    * A reference pointing to the user that generated the timeline event
    */
-  createdBy: Ref;
+  createdBy: EntityRef;
+  /**
+   * The affected entity for this event.
+   */
+  affectedEntity: EntityRef;
+  actionType: ActionType;
+};
+
+/**
+ * A timeline associated to a workspace.  We store multiple events on a single
+ * day entry to make it more efficient to retrieve the events for a given day.
+ */
+export type WorkspaceTimeline = {
+  /**
+   * The workspace that this timeline is associated with.
+   */
+  workspaceUid: string;
+  /**
+   * The date for this timeline.  To make this scalable
+   */
+  dateString: string; // ISO 8601 date string
+  /**
+   * An array of events that occurred for this date.
+   */
+  events: TimelineEvent[];
 } & Entity;

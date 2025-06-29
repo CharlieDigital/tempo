@@ -112,12 +112,16 @@ import {
   tabPlus,
   tabTrash,
 } from "quasar-extras-svg-icons/tabler-icons";
-import { workspaceRepository } from "../services/Repository";
+import { workspaceRepository } from "../../services/Repository";
 
 const visible = defineModel<boolean>({ required: true });
 
 const store = useAppStore();
-const { dark, activeWorkspace } = storeToRefs(store);
+const { dark } = storeToRefs(store);
+
+const dataStore = useDataStore();
+const { activeWorkspace } = storeToRefs(dataStore);
+
 const workstreams = computed(() => activeWorkspace.value.workstreams);
 
 function addWorkstream() {
@@ -125,6 +129,7 @@ function addWorkstream() {
   activeWorkspace.value.workstreams.splice(lastIndex, 0, {
     uid: nanoid(6),
     name: `Workstream ${lastIndex}`,
+    type: "workstream",
   });
 }
 
@@ -133,7 +138,7 @@ function removeWorkstream(index: number) {
 }
 
 async function saveWorkspaceOptions() {
-  workspaceRepository.update(activeWorkspace.value);
+  await workspaceRepository.update(activeWorkspace.value);
 }
 </script>
 

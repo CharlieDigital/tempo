@@ -13,7 +13,7 @@
         'text-primary': !dark,
         'bg-grey-2': !dark,
         'text-grey-4': dark,
-        'bg-dark': dark,
+        'bg-grey-10': dark,
       }"
       flat
     >
@@ -38,8 +38,13 @@
           </QCardSection>
 
           <!--// The individual members //-->
-          <QCardSection class="q-px-none">
-            <MemberCard />
+          <QCardSection class="q-px-none q-gutter-md">
+            <MemberCard
+              v-for="(member, index) in members"
+              :key="member.uid"
+              :member
+              :index
+            />
           </QCardSection>
         </QCardSection>
       </QCardSection>
@@ -70,6 +75,11 @@
 
       <TimelineSection />
     </Teleport>
+
+    <!-- Header title -->
+    <Teleport defer to="#header-title">
+      {{ activeWorkspace?.name || "No Workspace Selected" }}
+    </Teleport>
   </QPage>
 </template>
 
@@ -79,6 +89,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useSubscribeWorkspace } from "../composables/workspaces";
 import { tabUserPlus } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { useDataStore } from "../stores/dataStore";
 
 const showSettings = ref(false);
 const showUsers = ref(false);
@@ -86,9 +97,13 @@ const showWorkspaces = ref(false);
 const showOptions = ref(false);
 
 dayjs.extend(relativeTime);
-const appStore = useAppStore();
 const route = useRoute();
-const { dark, activeWorkspace, focusMode } = storeToRefs(appStore);
+
+const appStore = useAppStore();
+const { dark, focusMode } = storeToRefs(appStore);
+
+const dataStore = useDataStore();
+const { members, activeWorkspace } = storeToRefs(dataStore);
 
 let unsubscribeListeners: () => void;
 

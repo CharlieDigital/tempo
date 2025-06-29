@@ -23,6 +23,31 @@ applyTo: "**"
 - YOU MUST Use PascalCase for Quasar components like QList, QItem, etc.!!
 - DO NOT use kebab-case for Quasar component names like q-list, q-item, etc.!!
 
+## Vue components
+- We are u sing Vue SFC (Single File Components)
+- Use the `<template>`, `<script setup lang="ts">`, and `<style scoped>` sections
+- Use the latest Vue 3 features like `defineModel`
+- When using `defineEmits`, follow the pattern:
+  ```typescript
+  const emit = defineEmits<{
+    eventName1: [property1: type, property2: type] // Name tuple syntax
+    eventName2: [] // No properties; just event
+  }>();
+  ```
+- You can use abbreviated syntax for props on components when the name of the ref matches the prop:
+  ```html
+  <template>
+    <MyComponent :prop1 :prop2 :prop3="otherProperty"/>
+  </template>
+  <script setup lang="ts">
+    const prop1 = ref('') // Only when the name matches
+    const prop2 = ref(0) // Only when the name matches
+    const otherProperty = ref('') // This will be passed as prop3
+  </script>
+  ```
+- We are using the Lexorank library for ranking and sorting items; when items change order, we need to compute a new Lexorank for the `rank` property
+- Use the `rankSort` function from `app/src/utils/utility.ts` to sort
+
 ## Commenting
 - Add comments to explain logical decision
 - Document all function inputs
