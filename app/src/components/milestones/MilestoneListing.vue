@@ -53,7 +53,11 @@
           </QItemLabel>
         </QItemSection>
         <QItemSection v-show="hoveringMilestone === milestone.uid" side>
-          <MilestoneMenu :milestone @save="handleSaveMilestone" />
+          <MilestoneActionButton
+            :id="`edit_${milestone.uid}`"
+            :milestone="milestone"
+            @click="emit('click', `edit_${milestone.uid}`, milestone)"
+          />
         </QItemSection>
         <QIcon
           v-show="hoveringMilestone === milestone.uid"
@@ -98,18 +102,16 @@ defineProps<{
   milestone: Milestone;
 }>();
 
+const emit = defineEmits<{
+  click: [id: string, milestone: Milestone];
+}>();
+
 const appStore = useAppStore();
 const { dark } = storeToRefs(appStore);
-
-const dataStore = useDataStore();
 
 const expanded = ref(false);
 const hoveringMilestone = ref("");
 const hoveringTask = ref("");
-
-async function handleSaveMilestone(milestone: Milestone, mode: "add" | "update") {
-  await dataStore.saveMilestone(milestone, mode);
-}
 
 const tasks = computed<Task[]>(() => {
   return [];

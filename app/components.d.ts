@@ -14,6 +14,7 @@ declare module 'vue' {
     MemberCard: typeof import('./src/components/members/MemberCard.vue')['default']
     MemberListing: typeof import('./src/components/members/MemberListing.vue')['default']
     MembersSection: typeof import('./src/components/members/MembersSection.vue')['default']
+    MilestoneActionButton: typeof import('./src/components/milestones/MilestoneActionButton.vue')['default']
     MilestoneChip: typeof import('./src/components/MilestoneChip.vue')['default']
     MilestoneListing: typeof import('./src/components/milestones/MilestoneListing.vue')['default']
     MilestoneMenu: typeof import('./src/components/milestones/MilestoneMenu.vue')['default']
