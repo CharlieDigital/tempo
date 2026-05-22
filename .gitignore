@@ -3,5 +3,5 @@ dist/
 .data/
 *.log
 
-bin/
 obj/
+bin/
