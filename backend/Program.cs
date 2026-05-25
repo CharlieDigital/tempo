@@ -52,6 +52,22 @@ app.MapGet(
     }
 );
 
+app.MapGet(
+    "/airqualityforecast",
+    () =>
+    {
+        var forecast = Enumerable
+            .Range(1, 5)
+            .Select(index => new
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                AirQualityIndex = Random.Shared.Next(0, 500),
+            })
+            .ToArray();
+        return forecast;
+    }
+);
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
