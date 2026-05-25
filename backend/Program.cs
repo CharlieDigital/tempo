@@ -68,6 +68,23 @@ app.MapGet(
     }
 );
 
+// Add UV index to forecast
+app.MapGet(
+    "/uvindexforecast",
+    () =>
+    {
+        var forecast = Enumerable
+            .Range(1, 5)
+            .Select(index => new
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                UVIndex = Random.Shared.Next(0, 11),
+            })
+            .ToArray();
+        return forecast;
+    }
+);
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
