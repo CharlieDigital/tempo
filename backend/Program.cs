@@ -85,6 +85,22 @@ app.MapGet(
     }
 );
 
+app.MapGet(
+    "/windforecast",
+    () =>
+    {
+        var forecast = Enumerable
+            .Range(1, 5)
+            .Select(index => new
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                WindSpeedKph = Random.Shared.Next(0, 100),
+            })
+            .ToArray();
+        return forecast;
+    }
+);
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
